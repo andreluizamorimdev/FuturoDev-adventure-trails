@@ -1,20 +1,17 @@
-import { useEffect, useState } from "react";
-import useFetch from "../hooks/useFetch";
+import { useContext } from "react";
 import CardTrilha from "../components/CardTrilha";
+import { TrilhasContext } from "../context/TrilhasContext";
 function PaginaListaTrilhas() {
- const [dados, isLoading] = useFetch("/listaTrilhas.json");
- const [trilhas, setTrilhas] = useState([]);
+ const { trilhas, isLoading } = useContext(TrilhasContext);
 
- useEffect(() => {
-  if (!!dados) {
-   setTrilhas(dados.trilhas);
-  }
- }, [dados]);
  return (
   <div className="container">
    <h1 className="titulo">Explore trilhas incríveis</h1>
 
-   {Array.isArray(trilhas) &&
+   {isLoading && <p>Carregando trilhas...</p>}
+
+   {!isLoading &&
+    Array.isArray(trilhas) &&
     trilhas.map((trilha, index) => (
      <CardTrilha dadosTrilha={trilha} key={index} />
     ))}
